@@ -1,0 +1,10 @@
+# Packages
+node_modules
+
+# Output files
+dist
+
+# IDEs and editors
+.github
+.vscode
+.vs
