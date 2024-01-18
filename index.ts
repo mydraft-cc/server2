@@ -1,6 +1,5 @@
 import { Database } from '@hocuspocus/extension-database';
 import { Logger } from '@hocuspocus/extension-logger';
-import { randomUUID } from 'crypto';
 import { Server } from '@hocuspocus/server';
 import { Storage } from '@google-cloud/storage';
 import { utils } from './stream-helper'
