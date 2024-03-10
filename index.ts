@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import { Database } from '@hocuspocus/extension-database';
 import { Logger } from '@hocuspocus/extension-logger';
 import { Server } from '@hocuspocus/server';
@@ -13,9 +14,9 @@ const uid = new ShortUniqueId({ length: 20 });
 
 const serverPort = parseInt(process.env.SERVER_PORT || '8080');
 let storageBucket: Bucket | typeof fileStore;
-if (process.env.BUCKET_NAME) {
+if (process.env.STORAGE_TYPE === "gcp") {
     const storageClient = new Storage();
-    storageBucket = storageClient.bucket(process.env.BUCKET_NAME);
+    storageBucket = storageClient.bucket(process.env.STORAGE_GCP_BUCKET_NAME || 'athene-diagram-files');
 } else {
     storageBucket = fileStore
 }
