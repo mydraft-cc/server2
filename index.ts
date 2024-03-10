@@ -11,14 +11,14 @@ import ShortUniqueId from 'short-unique-id';
 import fileStore from './fileStore';
 
 const uid = new ShortUniqueId({ length: 20 });
-
 const serverPort = parseInt(process.env.SERVER_PORT || '8080');
+
 let storageBucket: Bucket | typeof fileStore;
-if (process.env.STORAGE_TYPE === "gcp") {
+if (process.env.STORAGE_TYPE === "local") {
+    storageBucket = fileStore
+} else {
     const storageClient = new Storage();
     storageBucket = storageClient.bucket(process.env.STORAGE_GCP_BUCKET_NAME || 'athene-diagram-files');
-} else {
-    storageBucket = fileStore
 }
 
 const server = Server.configure({
