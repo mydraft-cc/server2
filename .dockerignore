@@ -8,3 +8,4 @@ dist
 .github
 .vscode
 .vs
+localFileStore
