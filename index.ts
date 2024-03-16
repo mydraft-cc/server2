@@ -9,6 +9,7 @@ import express from 'express';
 import expressWebsockets from 'express-ws';
 import ShortUniqueId from 'short-unique-id';
 import fileStore from './fileStore';
+import path from 'node:path';
 
 const uid = new ShortUniqueId({ length: 20 });
 const serverPort = parseInt(process.env.SERVER_PORT || '8080');
@@ -56,17 +57,17 @@ const { app } = expressWebsockets(express());
 app.use(cors());
 app.use(express.json());
 
-app.get('/health', (_, response) => {
+app.get('/api/health', (_, response) => {
     response.send({
         status: 'Healthy'
     });
 });
 
-app.ws('/collaboration', (websocket, request) => {  
+app.ws('/api/collaboration', (websocket, request) => {  
     server.handleConnection(websocket, request, {});
 });
 
-app.get('/:tokenRead', async (request, response) => {
+app.get('/api/:tokenRead', async (request, response) => {
     const file  = storageBucket.file(request.params.tokenRead);
 
     const [exists] = await file.exists();
@@ -80,7 +81,7 @@ app.get('/:tokenRead', async (request, response) => {
     file.createReadStream().pipe(response);
 });
 
-app.post('/', async (request, response) => {
+app.post('/api/', async (request, response) => {
     const tokenWrite = uid.rnd();
     const tokenRead = uid.rnd();
 
@@ -97,7 +98,7 @@ app.post('/', async (request, response) => {
     return response.status(201).json({ readToken: tokenRead, writeToken: tokenWrite });
 });
 
-app.put('/:tokenRead/:tokenWrite', async (request, response) => {
+app.put('/api/:tokenRead/:tokenWrite', async (request, response) => {
     const tokenWrite = request.params.tokenWrite;
     const tokenRead = request.params.tokenRead;
 
@@ -120,5 +121,7 @@ app.put('/:tokenRead/:tokenWrite', async (request, response) => {
 
     return response.status(201).json({ readToken: tokenRead, writeToken: tokenWrite });
 });
+
+app.use("/*", express.static(path.join(__dirname, './ui/dist')))
 
 app.listen(serverPort, () => console.log(`Listening on http://127.0.0.1:${serverPort}`));
