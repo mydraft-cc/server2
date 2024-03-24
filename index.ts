@@ -122,6 +122,6 @@ app.put('/api/:tokenRead/:tokenWrite', async (request, response) => {
     return response.status(201).json({ readToken: tokenRead, writeToken: tokenWrite });
 });
 
-app.use("/*", express.static(path.join(__dirname, './ui/dist')))
+app.use('/*', express.static(path.join(__dirname, './ui/dist'), {}))
 
-app.listen(serverPort, () => console.log(`Listening on http://127.0.0.1:${serverPort}`));
+app.listen(Number(serverPort), '0.0.0.0', () => console.log(`Listening on http://127.0.0.1:${serverPort}`));
