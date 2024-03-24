@@ -123,7 +123,7 @@ app.put('/api/:tokenRead/:tokenWrite', async (request, response) => {
 });
 
 app.use(express.static(path.join(__dirname, './ui/dist'), {}))
-app.get('/', function(req, res) {
+app.get('/*', function(req, res) {
     res.sendFile(path.join(__dirname, './ui/dist/index.html'));
 });
 
